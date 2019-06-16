@@ -16,3 +16,9 @@ def index():
 def event_profile(eventid):
     event = mongo.db.events.find_one_or_404({"id": eventid})
     return render_template("event.html", event=event)
+
+
+@app.route("/user.html")
+def user_profile():
+    events = mongo.db.events.find()
+    return render_template("user.html", events=events)

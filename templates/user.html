@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base_generic.html" %}
+{% block title %} AwesomeUser {% endblock %}
+{% block body %}
+    <ul>
+        <li> City: Saint-Petersburg </li>
+        <li> Age: 25 </li>
+        <li> Sex: Male </li>
+        <li> Interests:
+            <ul>
+                <li> IT</li>
+                <li> Development</li>
+                <li> Movies </li>
+            </ul>
+        </li>
+    </ul>
+    <h2> Attending: </h2>
+    <ul>
+    {% for event in events %}
+        <ul>
+            <li> <a href="{{ 'event.html/%s'%event.id }}"> {{ event.title }} </a></li>
+            <ul>
+                <li> {{ event.city }} </li>
+                <li> {{ event.date }} </li>
+            </ul>
+        </ul>
+    {% endfor %}
+    </ul>
+{% endblock %}
