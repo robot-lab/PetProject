@@ -11,4 +11,18 @@
         </ul>
     {% endfor %}
     </ul>
+    Didn't find what you was looking for?
+    <div class="form-group">
+    <form name="Ask" action="javascript:handleIt(query.value)">
+        <input type="text"  name="query" id="query">
+        <input name="Submit"  type="submit" value="Update"/>
+    </form>
+    </div>
+    <script type="text/javascript">
+
+      function handleIt(query) {
+          window.open("http://lmgtfy.com/?q=" + query)
+      }
+
+    </script>
 {% endblock %}
