@@ -8,10 +8,11 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    events = mongo.db.events.find()
+    return render_template("index.html", events=events)
 
 
-@app.route("/event/<eventname>")
-def event_profile(eventname):
-    event = mongo.db.events.find_one_or_404({"_id": eventname})
+@app.route("/event.html/<eventid>")
+def event_profile(eventid):
+    event = mongo.db.events.find_one_or_404({"id": eventid})
     return render_template("event.html", event=event)

@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>PetProject</title>
 
 </head>
 <body>
-    {{ online_users }}
-    {% for u in online_users %}
-        <li> {{ u }}</li>
+    <h1> List of events: </h1>
+    <ul>
+    {% for event in events %}
+        <ul>
+            <li> <a href="{{ 'event.html/%s'%event.id }}"> {{ event.title }} </a></li>
+            <ul>
+                <li> {{ event.city }} </li>
+                <li> {{ event.date }} </li>
+            </ul>
+        </ul>
     {% endfor %}
+    </ul>
 </body>
 </html>

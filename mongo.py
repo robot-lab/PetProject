@@ -10,7 +10,8 @@ print(db.list_collection_names())
 
 ''' create collection and insert one'''
 events = db.events
-event = {"name": "name1",
+event = {"title": "title1",
+         "id": "id1",
          "city": "city1",
          "address": "addr1",
          "date": "date1",
@@ -18,5 +19,6 @@ event = {"name": "name1",
          "description": "desc1",
          "tags": ["tag1"],
          "weight": 0.5}
-#events.insert_one(event)
+events.insert_one(event)
+
 print(events)
