@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ event.title }}</title>
-
-</head>
-<body>
-   <li> {{ event.title }} </li>
-   <li> {{ event.city }} </li>
-   <li> {{ event.description }} </li>
-   <li> {{ event.date }} </li>
-</body>
-</html>
+{% extends "base_generic.html" %}
+{% block title %} {{ event.title }} {% endblock %}
+{% block body %}
+    <li> {{ event.title }} </li>
+    <li> {{ event.city }} </li>
+    <li> {{ event.description }} </li>
+    <li> {{ event.date }} </li>
+{% endblock %}
