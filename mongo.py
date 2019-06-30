@@ -1,24 +1,20 @@
 from pymongo import MongoClient
+import csv
+
+
 
 '''connect to db'''
-client = MongoClient("mongodb+srv://virrius:QWErty@cluster0-2yjj1.mongodb.net/test?retryWrites=true&w=majority")
+client = MongoClient("mongodb://127.0.0.1:27017/")
 print(client.db.list_collection_names())
 print(client.database_names())
-db = client.get_database("test")
+db = client.get_database("events")
 print(db.list_collection_names())
 
 
 ''' create collection and insert one'''
 events = db.events
-event = {"title": "title1",
-         "id": "id1",
-         "city": "city1",
-         "address": "addr1",
-         "date": "date1",
-         "category": "cat1",
-         "description": "desc1",
-         "tags": ["tag1"],
-         "weight": 0.5}
-events.insert_one(event)
 
-print(events)
+with open("data.csv") as csvfile:
+    reader = csv.DictReader(csvfile, quotechar='"')
+    for row in reader:
+        events.insert_one({y: row[y] for y in row.keys() if y})
