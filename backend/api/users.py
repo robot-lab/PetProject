@@ -10,14 +10,8 @@ class Users(BaseResource):
         self.parser.add_argument('username', type=str)
         self.parser.add_argument('age', type=int)
         args = self.parser.parse_args()
-        
-        print(args)
-        res = self.mongo.db.users.find(args)
-        print(res)
+        clear_args = {key: value for key, value in args.items() if value}
+        res = self.mongo.db.users.find(clear_args)
         return json.loads(json.dumps([i for i in res], sort_keys=True, indent=4, default=json_util.default))
     
-    '''def get(self):
-        from backend import mongo
-        res = mongo.db.users.find()
-        return json.loads(json.dumps([i for i in res], sort_keys=True, indent=4, default=json_util.default))  '''  
 
