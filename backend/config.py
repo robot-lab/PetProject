@@ -1,7 +1,7 @@
 import os
 
 
-class Development(object):
+class DevelopmentTemplate(object):
     """
     Development environment configuration
     """
@@ -10,7 +10,7 @@ class Development(object):
     MONGO_URI = ""
 
 
-class Production(object):
+class ProductionTemplate(object):
     """
     Production environment configurations
     """
