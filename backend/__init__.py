@@ -22,11 +22,4 @@ def create_app(env_name):
     api =Api(app)
     api.add_resource(Users, '/users')
 
-    @app.route('/', methods=['GET'])
-    def index():
-        """
-        example endpoint
-        """
-        return 'Congratulations! Your first endpoint is workin'
-
     return app
