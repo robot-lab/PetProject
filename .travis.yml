@@ -1,6 +1,5 @@
+dist: xenial
 language: python
-addons:
-
 python:
   - "3.6"
   - "3.7"
