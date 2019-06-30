@@ -17,9 +17,9 @@ def create_app(env_name):
     app = Flask(__name__)
 
     app.config.from_object(app_config[env_name])
-    mongo.init_app(app)
+    mongo.init_app(app, uri=app.config['MONGO_URI'])
 
-    api =Api(app)
+    api = Api(app)
     api.add_resource(Users, '/users')
 
     return app
