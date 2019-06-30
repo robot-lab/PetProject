@@ -12,4 +12,6 @@ install:
 
 # command to run tests
 script:
+  - echo 'TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST'
   - cat ./backend/local_config.py
+  - docker build -t app:latest .
