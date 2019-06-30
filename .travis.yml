@@ -15,3 +15,7 @@ script:
   - echo 'TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST'
   - cat ./backend/local_config.py
   - docker build -t app:latest .
+
+# deploy to heroku
+after_success:
+  - bash deploy_scripts/heroku.sh
