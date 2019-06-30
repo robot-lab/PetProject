@@ -1,6 +1,6 @@
 import os
 
-from backend.app import create_app
+from backend import create_app
 os.environ.setdefault('FLASK_ENV', 'development')
 
 
