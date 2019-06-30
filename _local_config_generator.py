@@ -23,7 +23,7 @@ def get_var(key: str, default=None) -> str:
 
 def print_template():
     """
-    function for printing template to the local_settings.py file
+    function for printing template to the local_config.py file
     :return: None
     """
     with open("./backend/local_config.py", 'w') as f:
