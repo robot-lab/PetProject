@@ -7,3 +7,7 @@ class BaseResource(Resource):
         from backend import mongo
         self.mongo = mongo
         self.parser = reqparse.RequestParser()
+
+    @staticmethod
+    def clear_args(args):
+        return {key: value for key, value in args.items() if value}

@@ -4,6 +4,7 @@ from backend.config import app_config
 from flask_pymongo import PyMongo
 from flask_restful import Api
 from backend.api.users import Users
+from backend.api.events import Events
 
 mongo = PyMongo()
 
@@ -21,5 +22,6 @@ def create_app(env_name):
 
     api = Api(app)
     api.add_resource(Users, '/users')
+    api.add_resource(Events, '/events')
 
     return app
