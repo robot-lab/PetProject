@@ -1,18 +1,23 @@
-from flask import Flask, render_template
-from flask_pymongo import PyMongo
+from flask import Flask
 
-app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://virrius:QWErty@cluster0-2yjj1.mongodb.net/test?retryWrites=true&w=majority"
-mongo = PyMongo(app)
+from backend.config import app_config
 
 
-@app.route("/")
-def index():
-    events = mongo.db.events.find()
-    return render_template("index.html", events=events)
+def create_app(env_name):
+    """
+    Create app
+    """
 
+    # app initiliazation
+    app = Flask(__name__)
 
-@app.route("/event.html/<eventid>")
-def event_profile(eventid):
-    event = mongo.db.events.find_one_or_404({"id": eventid})
-    return render_template("event.html", event=event)
+    app.config.from_object(app_config[env_name])
+
+    @app.route('/', methods=['GET'])
+    def index():
+        """
+        example endpoint
+        """
+        return 'Congratulations! Your first endpoint is workin'
+
+    return app
