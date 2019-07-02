@@ -7,7 +7,7 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,
 from flask_restful import Resource, reqparse
 
 from backend.api.base_resource import BaseResource, UserBaseResource
-import re
+
 
 class Users(BaseResource):
     @jwt_required
@@ -20,12 +20,14 @@ class Users(BaseResource):
 class UserRegistration(UserBaseResource):
     def post(self):
         data = self.parser.parse_args()
-
+        msg, status = self.validate_user_data(data)
+        if not status:
+            return msg, 400
+        
         user = self.mongo.db.users.find_one({'username': data['username']})
         if user:
             return {'message': f'User {data["username"]} already exists'}, 403
-        if not re.search(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', data['email']):
-            return {'message': f'Invalid email address {data["email"]}'}, 400
+        
         try:
             data['password'] = self.generate_hash(data['password'])
             self.mongo.db.users.insert_one(data)
@@ -40,7 +42,7 @@ class UserRegistration(UserBaseResource):
             return {'message': 'Something went wrong'}, 500
 
 
-class UserLogin(UserBaseResource):
+class UserSignin(UserBaseResource):
     def post(self):
         data = self.parser.parse_args()
         current_user = self.mongo.db.users.find_one(
@@ -59,14 +61,26 @@ class UserLogin(UserBaseResource):
             return {'message': 'Wrong credentials'}
 
 
-class UserLogoutAccess(Resource):
+class UserSignoutAccess(BaseResource):
+    @jwt_required
     def post(self):
-        return {'message': 'User logout'}
+        jti = get_raw_jwt()['jti']
+        try:
+            self.mongo.db.rt.insert_one({"jti": jti})
+            return {'message': 'Access token has been revoked'}
+        except:
+            return {'message': 'Something went wrong'}, 500
 
 
-class UserLogoutRefresh(Resource):
+class UserSignoutRefresh(BaseResource):
+    @jwt_refresh_token_required
     def post(self):
-        return {'message': 'User logout'}
+        jti = get_raw_jwt()['jti']
+        try:
+            self.mongo.db.rt.insert_one({"jti": jti})
+            return {'message': 'Refresh token has been revoked'}
+        except:
+            return {'message': 'Something went wrong'}, 500
 
 
 class TokenRefresh(Resource):
@@ -75,11 +89,3 @@ class TokenRefresh(Resource):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity = current_user)
         return {'access_token': access_token}
-
-
-class AllUsers(Resource):
-    def get(self):
-        return {'message': 'List of users'}
-
-    def delete(self):
-        return {'message': 'Delete all users'}

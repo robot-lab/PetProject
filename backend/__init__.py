@@ -4,8 +4,8 @@ from flask_pymongo import PyMongo
 from flask_restful import Api
 
 from backend.api.events import Events
-from backend.api.users import (TokenRefresh, UserLogin, UserLogoutAccess,
-                               UserLogoutRefresh, UserRegistration, Users)
+from backend.api.users import (TokenRefresh, UserSignin, UserSignoutAccess,
+                               UserSignoutRefresh, UserRegistration, Users)
 from backend.config import app_config
 
 jwt = JWTManager()
@@ -13,11 +13,6 @@ mongo = PyMongo()
 
 
 def create_app(env_name):
-    """
-    Create app
-    """
-
-    # app initiliazation
     app = Flask(__name__)
 
     app.config.from_object(app_config[env_name])
@@ -25,13 +20,13 @@ def create_app(env_name):
     jwt.init_app(app)
 
     api = Api(app)
-    api.add_resource(Users, '/users')
-    api.add_resource(Events, '/events')
-    api.add_resource(UserRegistration, '/registration')
-    api.add_resource(UserLogin, '/login')
-    api.add_resource(UserLogoutAccess, '/logout/access')
-    api.add_resource(UserLogoutRefresh, '/logout/refresh')
-    api.add_resource(TokenRefresh, '/token/refresh')
+    api.add_resource(Users, '/api/users')
+    api.add_resource(Events, '/api/events')
+    api.add_resource(UserRegistration, '/api/signup')
+    api.add_resource(UserSignin, '/api/signin')
+    api.add_resource(UserSignoutAccess, '/api/signout/access')
+    api.add_resource(UserSignoutRefresh, '/api/signout/refresh')
+    api.add_resource(TokenRefresh, '/api/token/refresh')
 
     @app.after_request
     def after_request(response):
@@ -41,5 +36,13 @@ def create_app(env_name):
         response.headers.add(
             'Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
+    
+    def is_jti_blacklisted(jti):
+        query = mongo.db.rt.find_one({"jti": jti})
+        return bool(query)
 
+    @jwt.token_in_blacklist_loader
+    def check_if_token_in_blacklist(decrypted_token):
+        jti = decrypted_token['jti']
+        return is_jti_blacklisted(jti)
     return app

@@ -11,6 +11,7 @@ class Events(BaseResource):
         self.parser.add_argument('type', type=str)
         self.parser.add_argument('date', type=str)
         self.parser.add_argument('id', type=int)
+        self.parser.add_argument('city', type=str)
     
     def get(self):
         clear_args = self.clear_args(self.parser.parse_args())
