@@ -5,7 +5,7 @@ from flask_restful import Api
 
 from backend.api.events import Events
 from backend.api.users import (TokenRefresh, UserSignin, UserSignoutAccess,
-                               UserSignoutRefresh, UserRegistration, Users)
+                               UserSignoutRefresh, UserRegistration, Users, UserProfile)
 from backend.config import app_config
 
 jwt = JWTManager()
@@ -21,6 +21,7 @@ def create_app(env_name):
 
     api = Api(app)
     api.add_resource(Users, '/api/users')
+    api.add_resource(UserProfile, '/api/users/me')
     api.add_resource(Events, '/api/events')
     api.add_resource(UserRegistration, '/api/signup')
     api.add_resource(UserSignin, '/api/signin')
@@ -36,7 +37,7 @@ def create_app(env_name):
         response.headers.add(
             'Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
         return response
-    
+
     def is_jti_blacklisted(jti):
         query = mongo.db.rt.find_one({"jti": jti})
         return bool(query)

@@ -2,9 +2,10 @@ from flask_restful import Resource, reqparse
 from passlib.hash import pbkdf2_sha256 as sha256
 import re
 
+
 class BaseResource(Resource):
     def __init__(self):
-        super(BaseResource, self).__init__()   
+        super(BaseResource, self).__init__()
         from backend import mongo
         self.mongo = mongo
         self.parser = reqparse.RequestParser()
@@ -37,7 +38,7 @@ class UserBaseResource(BaseResource):
     @staticmethod
     def generate_hash(password):
         return sha256.hash(password)
-        
+
     @staticmethod
     def verify_hash(password, hash):
-        return sha256.verify(password, hash)   
+        return sha256.verify(password, hash)
