@@ -62,6 +62,10 @@ class UserRegistration(UserBaseResource):
         user = self.mongo.db.users.find_one({'username': data['username']})
         if user:
             return {'message': f'User {data["username"]} already exists'}, 403
+        
+        user = self.mongo.db.users.find_one({'email': data['email']})
+        if user:
+            return {'message': f'User with this email {data["email"]} already exists'}, 403
 
         try:
             data['password'] = self.generate_hash(data['password'])
@@ -123,4 +127,5 @@ class TokenRefresh(Resource):
     def post(self):
         current_user = get_jwt_identity()
         access_token = create_access_token(identity=current_user, expires_delta=False)
-        return {'access_token': access_token}
+        refresh_token = create_refresh_token(identity = current_user)
+        return {'access_token': access_token, 'refresh_token': refresh_token}
