@@ -7,10 +7,11 @@ from backend.api.events import Events
 from backend.api.users import (TokenRefresh, UserSignin, UserSignoutAccess,
                                UserSignoutRefresh, UserRegistration, Users, UserProfile)
 from backend.config import app_config
+from flask_cors import CORS
 
 jwt = JWTManager()
 mongo = PyMongo()
-
+cors = CORS()
 
 def create_app(env_name):
     app = Flask(__name__)
@@ -18,6 +19,7 @@ def create_app(env_name):
     app.config.from_object(app_config[env_name])
     mongo.init_app(app, uri=app.config['MONGO_URI'])
     jwt.init_app(app)
+    cors.init_app(app)
 
     api = Api(app)
     api.add_resource(Users, '/api/users')
@@ -28,15 +30,6 @@ def create_app(env_name):
     api.add_resource(UserSignoutAccess, '/api/signout/access')
     api.add_resource(UserSignoutRefresh, '/api/signout/refresh')
     api.add_resource(TokenRefresh, '/api/token/refresh')
-
-    @app.after_request
-    def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers',
-                             'Content-Type,Authorization')
-        response.headers.add(
-            'Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-        return response
 
     def is_jti_blacklisted(jti):
         query = mongo.db.rt.find_one({"jti": jti})
