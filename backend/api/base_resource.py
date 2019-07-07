@@ -84,3 +84,13 @@ class UserBaseResource(BaseResource):
     @staticmethod
     def verify_hash(password, hash):
         return sha256.verify(password, hash)
+
+
+class EventBaseResource(BaseResource):
+    def __init__(self):
+        super(EventBaseResource, self).__init__()
+        self.parser.add_argument('title', type=str)
+        self.parser.add_argument('type', type=str)
+        self.parser.add_argument('date', type=str)
+        self.parser.add_argument('id', type=int)
+        self.parser.add_argument('city', type=str)
