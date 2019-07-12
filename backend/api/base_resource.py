@@ -10,7 +10,7 @@ class BaseResource(Resource):
         from backend import mongo
         self.mongo = mongo
         self.parser = reqparse.RequestParser()
-        self. logger =logging.getLogger('flask.app')
+        self.logger = logging.getLogger('flask.app')
 
     @staticmethod
     def clear_args(args):
