@@ -11,6 +11,7 @@ class DevelopmentTemplate(object):
     TESTING = False
     MONGO_URI = ""
     SENTRY_DSN = ""
+    SECRET_KEY = ""
 
 
 class ProductionTemplate(object):
@@ -21,6 +22,7 @@ class ProductionTemplate(object):
     TESTING = False
     MONGO_URI = ""
     SENTRY_DSN = ""
+    SECRET_KEY = ""
 
 
 try:

@@ -39,6 +39,7 @@ class Development(object):
     TESTING = {get_var("TESTING_DEV", 'False')}
     MONGO_URI = "{get_var("MONGO_URI_DEV")}"
     SENTRY_DSN = "{get_var("SENTRY_DSN")}"
+    SECRET_KEY = "{get_var("SECRET_KEY")}"
 
 
 class Production(object):
@@ -49,6 +50,7 @@ class Production(object):
     TESTING = {get_var("TESTING_PROD", 'False')}
     MONGO_URI = "{get_var("MONGO_URI_PROD")}"
     SENTRY_DSN = "{get_var("SENTRY_DSN")}"
+    SECRET_KEY = "{get_var("SECRET_KEY")}"
 """)
 
 
