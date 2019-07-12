@@ -8,6 +8,7 @@ class DevelopmentTemplate(object):
     DEBUG = True
     TESTING = False
     MONGO_URI = ""
+    SECRET_KEY = ""
 
 
 class ProductionTemplate(object):
@@ -17,6 +18,7 @@ class ProductionTemplate(object):
     DEBUG = False
     TESTING = False
     MONGO_URI = ""
+    SECRET_KEY = ""
 
 
 try:
