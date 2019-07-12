@@ -2,23 +2,32 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_pymongo import PyMongo
 from flask_restful import Api
+import logging
+from logging.config import dictConfig
+from raven.contrib.flask import Sentry
 
 from backend.api.events import Events
 from backend.api.users import (TokenRefresh, UserSignin, UserSignoutAccess,
                                UserSignoutRefresh, UserRegistration, Users, UserProfile)
 from backend.config import app_config
+from backend.logger_config import LoggerConfig
 
 jwt = JWTManager()
 mongo = PyMongo()
+sentry = Sentry()
+
 
 
 def create_app(env_name):
     app = Flask(__name__)
 
     app.config.from_object(app_config[env_name])
+    dictConfig(LoggerConfig.dictConfig)
     mongo.init_app(app, uri=app.config['MONGO_URI'])
+    sentry.init_app(app, dsn=app.config['SENTRY_DSN'], logging=True,
+                    level=logging.ERROR,
+                    logging_exclusions=("flask.app", ))
     jwt.init_app(app)
-
     api = Api(app)
     api.add_resource(Users, '/api/users')
     api.add_resource(UserProfile, '/api/users/me')

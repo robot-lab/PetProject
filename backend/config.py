@@ -1,5 +1,7 @@
 import os
-
+import logging
+import logging.config
+from raven.contrib.flask import Sentry
 
 class DevelopmentTemplate(object):
     """
@@ -8,6 +10,7 @@ class DevelopmentTemplate(object):
     DEBUG = True
     TESTING = False
     MONGO_URI = ""
+    SENTRY_DSN = ""
 
 
 class ProductionTemplate(object):
@@ -17,6 +20,7 @@ class ProductionTemplate(object):
     DEBUG = False
     TESTING = False
     MONGO_URI = ""
+    SENTRY_DSN = ""
 
 
 try:
