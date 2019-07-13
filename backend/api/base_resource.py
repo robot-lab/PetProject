@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from passlib.hash import pbkdf2_sha256 as sha256
 import re
+import logging
 
 
 class BaseResource(Resource):
@@ -9,6 +10,7 @@ class BaseResource(Resource):
         from backend import mongo
         self.mongo = mongo
         self.parser = reqparse.RequestParser()
+        self.logger = logging.getLogger('flask.app')
 
     @staticmethod
     def clear_args(args):
